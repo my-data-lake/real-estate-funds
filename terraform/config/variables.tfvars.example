@@ -1,0 +1,20 @@
+# ID of the project
+project_id="project-example"
+
+# Region for the buckets
+region="us-east1"
+
+# Name of the raw zone bucket
+raw_zone_bucket = "project-example-raw-zone"
+
+# Time zone for the cloud scheduler
+time_zone = "America/Recife"
+
+# Cron expresion for the cloud scheduler
+scheduler_cron = "0 5 1 * *"
+
+# Environment variables for the cloud function
+environment_variables = {
+  "RAW_ZONE_BUCKET" = "project-example-raw-zone"
+  "IS_CLOUD_FUNCTION" = "true"
+}
