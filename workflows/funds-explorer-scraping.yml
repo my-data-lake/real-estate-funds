@@ -1,0 +1,39 @@
+  - init:
+      assign:
+        - failed: []
+        - downloaded: []
+  - getFundsList:
+      call: http.get
+      args:
+          url: https://real-estate-funds-j6wlualnrq-ue.a.run.app/api/funds-explorer/funds
+          auth:
+            type: OIDC
+      result: getFundsListResult
+  - downloadAllFundsPages:
+      for:
+        value: ticker
+        in: ${getFundsListResult.body}
+        steps:
+          - handleTicker:
+              try:
+                steps:
+                  - downloadFundDetails:
+                      call: http.get
+                      args:
+                        url: '${"https://real-estate-funds-j6wlualnrq-ue.a.run.app/api/funds-explorer/funds/" + ticker}'
+                        auth:
+                          type: OIDC
+                  - registerSuccess:
+                      assign:
+                        - downloaded: ${list.concat(downloaded, ticker)}
+              retry:
+                max_retries: 3
+              except:
+                steps:
+                  - registerFailed:
+                      assign:
+                        - failed: ${list.concat(failed, ticker)}
+  - final:
+      return:
+        failed: ${failed}
+        downloaded: ${downloaded}
