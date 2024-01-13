@@ -30,7 +30,7 @@ resource "google_cloudfunctions2_function" "this" {
   project  = var.project_id
 
   build_config {
-    runtime     = "nodejs16"
+    runtime     = "nodejs18"
     entry_point = "cloudFunctionHandler"
     source {
       storage_source {
